@@ -30,6 +30,9 @@ def clicky_box():
         square.set_filled(True)
         square.set_color("lightblue")
         gw.add(square)
+        gw.box=square
+        return square
+    box=my_square(225,225,50,50,'lightblue')
     # Center the square in the window
     my_square.x = (GW_WIDTH - SQUARE_SIZE) // 2
     my_square.y = (GW_HEIGHT - SQUARE_SIZE) // 2
@@ -49,7 +52,8 @@ def clicky_box():
         mouse_y = e.get_y()
         my_square(mouse_x,mouse_y,50,50,'lightblue')
 
-        # Debug print for mouse coordinates and square position
+
+        #mouse coordinates and square position
         print(f"Mouse clicked at: ({mouse_x}, {mouse_y})")
         print(f"Square position: ({my_square.x}, {my_square.y})")
 

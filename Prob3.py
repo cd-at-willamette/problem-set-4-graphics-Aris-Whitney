@@ -25,14 +25,15 @@ def clicky_box():
     gw = GWindow(GW_WIDTH, GW_HEIGHT)
 
     # Create a filled colored square
-    square = GRect(SQUARE_SIZE, SQUARE_SIZE)
-    square.set_filled(True)
-    square.set_color("lightblue")
-
+    def my_square(x,y,w,h,color):
+        square = GRect(225,225,SQUARE_SIZE, SQUARE_SIZE)
+        square.set_filled(True)
+        square.set_color("lightblue")
+        gw.add(square)
     # Center the square in the window
-    square.x = (GW_WIDTH - SQUARE_SIZE) // 2
-    square.y = (GW_HEIGHT - SQUARE_SIZE) // 2
-    gw.add(square)
+    my_square.x = (GW_WIDTH - SQUARE_SIZE) // 2
+    my_square.y = (GW_HEIGHT - SQUARE_SIZE) // 2
+    
 
     #initial score
     score = [0]  # Use a list to hold the score
@@ -42,17 +43,18 @@ def clicky_box():
     score_label.y = GW_HEIGHT - SCORE_DY
     gw.add(score_label)
 
-    def on_mouse_down(event):
+    def on_mouse_down(e):
         # Get mouse coordinates
-        mouse_x = event.getX()
-        mouse_y = event.getY()
+        mouse_x = e.get_x()
+        mouse_y = e.get_y()
+        my_square(mouse_x,mouse_y,50,50,'lightblue')
 
         # Debug print for mouse coordinates and square position
         print(f"Mouse clicked at: ({mouse_x}, {mouse_y})")
-        print(f"Square position: ({square.x}, {square.y})")
+        print(f"Square position: ({my_square.x}, {my_square.y})")
 
         # Check if the click is inside the square
-        if (square.x <= mouse_x <= square.x + SQUARE_SIZE) and (square.y <= mouse_y <= square.y + SQUARE_SIZE):
+        if (my_square.x <= mouse_x <= my_square.x + SQUARE_SIZE) and (my_square.y <= mouse_y <= my_square.y + SQUARE_SIZE):
             print("Square clicked!")  
             score[0] += 1  # adds 1 to previous score
             
@@ -64,10 +66,10 @@ def clicky_box():
             new_x = min(new_x, GW_WIDTH - SQUARE_SIZE)
             new_y = min(new_y, GW_HEIGHT - SQUARE_SIZE)
             
-            square.x = new_x
-            square.y = new_y
+            my_square.x = new_x
+            my_square.y = new_y
         else:
-            print("Clicked outside the square.")  # Debug print
+            print("Clicked outside the square.")  
             score[0] = 0  # Reset score if clicked outside
         
         # Update score display
@@ -75,17 +77,6 @@ def clicky_box():
 
     # Add the mouse click event listener
     gw.add_event_listener("click", on_mouse_down)
-
-if __name__ == '__main__':
-    clicky_box()
-
-
-
-
-
-
-
-
 
 
 

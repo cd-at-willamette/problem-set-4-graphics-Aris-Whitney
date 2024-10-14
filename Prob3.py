@@ -1,30 +1,83 @@
 ########################################
-# Name:
+# Name:Aris Whitney
 # Collaborators:
-# Estimate time spent (hrs):
+# Estimate time spent (hrs):3
 ########################################
 
-from pgl import GWindow, GRect, GLabel, GLine
+from pgl import GWindow, GRect, GLabel
 import random
 
-GW_WIDTH = 500                      # Width of window
-GW_HEIGHT = 500                     # Height of window
-SQUARE_SIZE = 50                    # Width and height of square
-SCORE_DX = 10                       # Distance from left of window to origin
-SCORE_DY = 10                       # Distance up from bottom of window to baseline
-SCORE_FONT = "bold 40pt 'serif'"    # Font for score
+# Constants
+GW_WIDTH = 500                       # Width of window
+GW_HEIGHT = 500                      # Height of window
+SQUARE_SIZE = 50                     # Width and height of square
+SCORE_DX = 10                        # Distance from left of window to origin
+SCORE_DY = 10                        # Distance up from bottom of window to baseline
+SCORE_FONT = "bold 20pt 'serif'"     # Font for score
+SOME_VAL = random.randint(1, 499)
+print(SOME_VAL)                      # To calculate random position
+
+def get_r():
+    return random.randint(0, SOME_VAL)
 
 def clicky_box():
-
-    # Defining the callback function, which you won't need until Part C
-    def on_mouse_down(event):
-        print("You clicked the window!") # Delete this once you start Part C
-
-
-    # Down here you should initialize the window and draw the initial square
-    # Make sure you tab it in so that it is part of the clicky_box function
-
+    # Create a graphics window
     gw = GWindow(GW_WIDTH, GW_HEIGHT)
+
+    # Create a filled colored square
+    square = GRect(SQUARE_SIZE, SQUARE_SIZE)
+    square.set_filled(True)
+    square.set_color("lightblue")
+
+    # Center the square in the window
+    square.x = (GW_WIDTH - SQUARE_SIZE) // 2
+    square.y = (GW_HEIGHT - SQUARE_SIZE) // 2
+    gw.add(square)
+
+    #initial score
+    score = [0]  # Use a list to hold the score
+    score_label = GLabel(f"Score: {score[0]}")
+    score_label.font = SCORE_FONT
+    score_label.x = SCORE_DX
+    score_label.y = GW_HEIGHT - SCORE_DY
+    gw.add(score_label)
+
+    def on_mouse_down(event):
+        # Get mouse coordinates
+        mouse_x = event.getX()
+        mouse_y = event.getY()
+
+        # Debug print for mouse coordinates and square position
+        print(f"Mouse clicked at: ({mouse_x}, {mouse_y})")
+        print(f"Square position: ({square.x}, {square.y})")
+
+        # Check if the click is inside the square
+        if (square.x <= mouse_x <= square.x + SQUARE_SIZE) and (square.y <= mouse_y <= square.y + SQUARE_SIZE):
+            print("Square clicked!")  
+            score[0] += 1  # adds 1 to previous score
+            
+            # Move the square to a new random position within bounds
+            new_x = get_r()
+            new_y = get_r()
+            
+            # Ensure the square is within the bounds
+            new_x = min(new_x, GW_WIDTH - SQUARE_SIZE)
+            new_y = min(new_y, GW_HEIGHT - SQUARE_SIZE)
+            
+            square.x = new_x
+            square.y = new_y
+        else:
+            print("Clicked outside the square.")  # Debug print
+            score[0] = 0  # Reset score if clicked outside
+        
+        # Update score display
+        score_label.text = f"Score: {score[0]}"
+
+    # Add the mouse click event listener
+    gw.add_event_listener("click", on_mouse_down)
+
+if __name__ == '__main__':
+    clicky_box()
 
 
 
